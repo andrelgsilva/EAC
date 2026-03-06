@@ -1,61 +1,65 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   StyleSheet,
-  Alert,
-  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 
 export default function Index() {
+  const [age, setAge] = useState("");
   const [day, setDay] = useState("");
   const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [age, setAge] = useState<number | null>(null);
+  const [birthYear, setBirthYear] = useState<number | null>(null);
 
-  const calculateAge = () => {
-    Keyboard.dismiss();
+  useEffect(() => {
+    calculateBirthYear();
+  }, [age, day, month]);
 
-    if (!day || !month || !year) {
-      Alert.alert("Erro", "Preencha dia, mês e ano");
+  const calculateBirthYear = () => {
+    if (!age || !day || !month) {
+      setBirthYear(null);
       return;
     }
-
-    const birthDate = new Date(
-      Number(year),
-      Number(month) - 1,
-      Number(day)
-    );
 
     const today = new Date();
 
-    if (birthDate > today) {
-      Alert.alert("Erro", "Data inválida");
-      return;
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1;
+    const currentDay = today.getDate();
+
+    let calculatedYear = currentYear - Number(age);
+
+    const hasHadBirthday =
+      currentMonth > Number(month) ||
+      (currentMonth === Number(month) && currentDay >= Number(day));
+
+    if (!hasHadBirthday) {
+      calculatedYear -= 1;
     }
 
-    let calculatedAge =
-      today.getFullYear() - birthDate.getFullYear();
-
-    const hasHadBirthdayThisYear =
-      today.getMonth() > birthDate.getMonth() ||
-      (today.getMonth() === birthDate.getMonth() &&
-        today.getDate() >= birthDate.getDate());
-
-    if (!hasHadBirthdayThisYear) {
-      calculatedAge--;
-    }
-
-    setAge(calculatedAge);
+    setBirthYear(calculatedYear);
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Calculadora de Idade</Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <Text style={styles.title}>Calculadora de Ano de Nascimento</Text>
 
       <View style={styles.row}>
+        <TextInput
+          style={styles.input}
+          placeholder="Idade"
+          keyboardType="numeric"
+          value={age}
+          onChangeText={setAge}
+          maxLength={3}
+        />
+
         <TextInput
           style={styles.input}
           placeholder="Dia"
@@ -63,7 +67,6 @@ export default function Index() {
           value={day}
           onChangeText={setDay}
           maxLength={2}
-          returnKeyType="next"
         />
 
         <TextInput
@@ -73,29 +76,15 @@ export default function Index() {
           value={month}
           onChangeText={setMonth}
           maxLength={2}
-          returnKeyType="next"
-        />
-
-        <TextInput
-          style={styles.input}
-          placeholder="Ano"
-          keyboardType="numeric"
-          value={year}
-          onChangeText={setYear}
-          maxLength={4}
-          returnKeyType="done"
-          onSubmitEditing={calculateAge}
         />
       </View>
 
-      <Button title="Calcular Idade" onPress={calculateAge} />
-
-      {age !== null && (
+      {birthYear !== null && (
         <Text style={styles.result}>
-          Você tem {age} anos
+          Ano de nascimento: {birthYear}
         </Text>
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -108,8 +97,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    marginBottom: 20,
     fontWeight: "bold",
+    marginBottom: 20,
   },
   row: {
     flexDirection: "row",
@@ -119,14 +108,14 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
-    padding: 10,
     borderRadius: 8,
-    width: 80,
+    width: 90,
+    padding: 10,
     textAlign: "center",
   },
   result: {
-    marginTop: 20,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
+    marginTop: 20,
   },
 });
