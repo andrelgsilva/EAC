@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Modal, Pressable } from "react-native";
 import { useState } from "react";
 
 export default function Profile() {
@@ -31,27 +31,32 @@ export default function Profile() {
         animationType="fade"
         onRequestClose={() => setModalVisivel(false)}
       >
-        <View style={styles.overlay}>
-          <View style={styles.modalBox}>
+        <Pressable 
+          style={styles.overlay} 
+          onPress={() => setModalVisivel(false)}
+        >
+          <Pressable onPress={(e) => e.stopPropagation()}>
+            <View style={styles.modalBox}>
 
-            <Text style={styles.modalTitulo}>Mais sobre mim</Text>
+              <Text style={styles.modalTitulo}>Mais sobre mim</Text>
 
-            <Text style={styles.modalTexto}>
-              {`Localização: Recife, PE\n
-              \n Stack: React Native, Expo, TypeScript\n
-              \n Objetivo: Criar apps que resolvam problemas reais\n
-              \n Atualmente estudando: Arquitetura mobile e boas práticas`}
-            </Text>
+              <Text style={styles.modalTexto}>
+                {`Localização: Recife, PE\n
+                \n Stack: React Native, Expo, TypeScript\n
+                \n Objetivo: Criar apps que resolvam problemas reais\n
+                \n Atualmente estudando: Arquitetura mobile e boas práticas`}
+              </Text>
 
-            <TouchableOpacity
-              style={styles.botaoFechar}
-              onPress={() => setModalVisivel(false)}
-            >
-              <Text style={styles.botaoTexto}>Fechar</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.botaoFechar}
+                onPress={() => setModalVisivel(false)}
+              >
+                <Text style={styles.botaoTexto}>Fechar</Text>
+              </TouchableOpacity>
 
-          </View>
-        </View>
+            </View>
+          </Pressable>
+        </Pressable>
       </Modal>
 
     </View>
