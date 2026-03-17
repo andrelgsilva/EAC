@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "minibio",
-    "slug": "minibio",
+    "name": "minibio-modal",
+    "slug": "minibio-modal",
     "owner": "andrelgsilva",
     "runtimeVersion": {
       "policy": "appVersion"
@@ -9,7 +9,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "minibio",
+    "scheme": "minibio-modal",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -51,11 +51,8 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "610b0512-21fd-4a29-bafe-cc86e0455f3c"
+        "projectId": "d09806b3-8341-4368-a662-d620655fcedf"
       }
-    },
-    "updates": {
-      "url": "https://u.expo.dev/610b0512-21fd-4a29-bafe-cc86e0455f3c"
     }
   }
 }
