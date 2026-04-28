@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
 import {
   Appbar,
   Card,
-  Title,
-  Paragraph,
   Button,
   TextInput,
   Avatar,
   FAB,
-  Text
+  Text,
+  Snackbar
 } from 'react-native-paper';
+import { ThemeContext } from '../_layout';
 
 export default function HomeScreen() {
   const [nome, setNome] = useState('');
+  const [visibleSnack, setVisibleSnack] = useState(false);
+  const { isDarkTheme } = useContext(ThemeContext);
 
   return (
     <View style={styles.container}>
@@ -42,10 +44,10 @@ export default function HomeScreen() {
             <Text variant="titleLarge">
               Bem-vindo!
             </Text>
-            <Paragraph>
+            <Text variant="bodyMedium">
               Este app demonstra os principais
               componentes do React Native Paper.
-            </Paragraph>
+            </Text>
           </Card.Content>
         </Card>
 
@@ -59,10 +61,28 @@ export default function HomeScreen() {
 
         <FAB
           icon="plus"
-          style={styles.fab}
-          onPress={() => console.log('FAB pressionado')}
+          style={[
+            styles.fab,
+            { backgroundColor: isDarkTheme ? '#D0BCFF' : '#6750A4' }
+          ]}
+          color={isDarkTheme ? '#381E72' : '#FFFFFF'}
+          onPress={() => setVisibleSnack(true)}
         />
       </View>
+
+      <Snackbar
+        visible={visibleSnack}
+        onDismiss={() => setVisibleSnack(false)}
+        duration={3000}
+        style={[
+          styles.snackbar,
+          { backgroundColor: isDarkTheme ? '#381E72' : '#6750A4' }
+        ]}
+      >
+        <Text style={{ textAlign: 'center', color: isDarkTheme ? '#D0BCFF' : '#FFFFFF' }}>
+          FAB pressionado!
+        </Text>
+      </Snackbar>
     </View>
   );
 }
@@ -92,5 +112,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 20,
     bottom: 20
+  }, 
+  snackbar: {
+    alignSelf: 'center',
   }
 });

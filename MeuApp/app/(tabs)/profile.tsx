@@ -7,7 +7,6 @@ import {
   Snackbar,
   Dialog,
   Portal,
-  Paragraph,
   Text
 } from 'react-native-paper';
 
@@ -61,8 +60,14 @@ export default function ProfileScreen() {
         visible={visibleSnack}
         onDismiss={() => setVisibleSnack(false)}
         duration={3000}
+        style={[
+          styles.snackbar,
+          { backgroundColor: isDarkTheme ? '#381E72' : '#6750A4' }
+        ]}
       >
-        Snackbar exibido com sucesso!
+        <Text style={{ textAlign: 'center', color: isDarkTheme ? '#D0BCFF' : '#FFFFFF' }}>
+          Snackbar exibido com sucesso!
+        </Text>
       </Snackbar>
 
       <Portal>
@@ -97,5 +102,8 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 15
+  },
+  snackbar: {
+    alignSelf: 'center',
   }
 });
